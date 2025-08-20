@@ -1,31 +1,20 @@
 pipeline {
     agent any
-    
+    environment {
+        MULE_USERNAME = credentials('Bala_23_07')
+        MULE_PASSWORD = credentials('Pulsar@2003')
+    }
     stages {
-        stage('Checkout') {
+        stage('Deploy') {
             steps {
-                checkout scm
-            }
-        }
-        
-        stage('Build Application') {
-            steps {
-                bat 'mvn clean install'
-            }
-        }
-        
-        stage('Deploy CloudHubs') {
-            steps {
-                bat """
-                    mvn clean deploy -DmuleDeploy ^
-                    -Dusername=Bala_23_07 ^
-                    -Dpassword=Pulsar@2003 ^
-                    -DdeploymentTarget=cloudhub-2.0 ^
-                    -Dapplication.name=cicd-demo ^
-                    -DworkerType=Micro ^
-                    -Dworkers=1 ^
-                    -Druntime=4.7.2
-                """
+                script {
+                    sh '''
+                        mvn clean package deploy -DmuleDeploy \
+                        -Dmule.username=${MULE_USERNAME} \
+                        -Dmule.password=${MULE_PASSWORD} \
+                        -Dmule.environment=dev
+                    '''
+                }
             }
         }
     }
