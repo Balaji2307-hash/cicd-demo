@@ -1,20 +1,19 @@
 pipeline {
     agent any
     stages {
-        stage('Check Versions') {
+        stage('Check Maven Version') {
             steps {
                 bat 'mvn -version'
-                bat 'java -version'
             }
         }
-        stage('Build Application') {
+        stage('Clean Build') {
             steps {
-                bat 'mvn clean compile -DskipTests'
+                bat 'mvn clean -DskipTests'
             }
         }
-        stage('Package Application') {
+        stage('Compile and Package') {
             steps {
-                bat 'mvn package -DskipTests'
+                bat 'mvn compile package -DskipTests'
             }
         }
         stage('Deploy to CloudHub') {
@@ -22,14 +21,14 @@ pipeline {
                 withCredentials([
                     usernamePassword(
                         credentialsId: 'anypointplatformcredentials', 
-                        usernameVariable: 'Bala_23_07', 
-                        passwordVariable: 'Pulsar@2003'
+                        usernameVariable: 'MULE_USERNAME', 
+                        passwordVariable: 'MULE_PASSWORD'
                     )
                 ]) {
                     bat """
                         mvn deploy -DmuleDeploy ^
-                        -Dmule.username=%MULE_USERNAME% ^
-                        -Dmule.password=%MULE_PASSWORD% ^
+                        -Dmule.username=Bala_23_07 ^
+                        -Dmule.password=Pulsar@2003 ^
                         -DskipTests
                     """
                 }
@@ -45,7 +44,6 @@ pipeline {
         }
         failure {
             echo 'Deployment failed. Check logs for details.'
-            bat 'mvn -version'
         }
     }
 }
