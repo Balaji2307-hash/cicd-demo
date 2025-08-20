@@ -12,15 +12,14 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-
-		<!-- Use consistent Mule runtime version -->
+		
+		<!-- Mule Runtime Version -->
 		<mule.version>4.4.0</mule.version>
 		
-		<!-- Use consistent Maven plugin version -->
-		<mule.maven.plugin.version>3.9.5</mule.maven.plugin.version>
+		<!-- Latest stable Mule Maven Plugin version -->
+		<mule.maven.plugin.version>3.9.4</mule.maven.plugin.version>
 		
 		<!-- CloudHub deployment properties -->
-		<cloudhub.deployment.type>cloudhub</cloudhub.deployment.type>
 		<cloudhub.environment>dev</cloudhub.environment>
 		<cloudhub.worker.type>Micro</cloudhub.worker.type>
 		<cloudhub.workers>1</cloudhub.workers>
@@ -39,19 +38,14 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
-					<cloudHubDeployment>
-						<uri>https://anypoint.mulesoft.com</uri>
-						<applicationName>${project.artifactId}</applicationName>
-						<username>${mule.username}</username>
-						<password>${mule.password}</password>
-						<environment>${cloudhub.environment}</environment>
-						<workerType>${cloudhub.worker.type}</workerType>
-						<workers>${cloudhub.workers}</workers>
-						<properties>
-							<property key="anypoint.platform.client_id" value="${mule.client.id}"/>
-							<property key="anypoint.platform.client_secret" value="${mule.client.secret}"/>
-						</properties>
-					</cloudHubDeployment>
+					<deploymentType>cloudhub</deploymentType>
+					<muleVersion>${mule.version}</muleVersion>
+					<username>${mule.username}</username>
+					<password>${mule.password}</password>
+					<environment>${cloudhub.environment}</environment>
+					<workerType>${cloudhub.worker.type}</workerType>
+					<workers>${cloudhub.workers}</workers>
+					<businessGroup>YOUR_BUSINESS_GROUP_ID</businessGroup> <!-- Add your business group ID -->
 				</configuration>
 			</plugin>
 		</plugins>
@@ -105,6 +99,11 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
+		<pluginRepository>
+			<id>anypoint-exchange-v3</id>
+			<name>Anypoint Exchange</name>
+			<url>https://maven.anypoint.mulesoft.com/api/v3/maven</url>
+			<layout>default</layout>
+		</pluginRepository>
 	</pluginRepositories>
-
 </project>
