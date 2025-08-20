@@ -17,7 +17,7 @@
 		<mule.version>4.9.7</mule.version>
 		
 		<!-- Latest stable Mule Maven Plugin version -->
-		<mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
+		<mule.maven.plugin.version>3.9.4</mule.maven.plugin.version>
 		
 		<!-- CloudHub deployment properties -->
 		<cloudhub.environment>dev</cloudhub.environment>
