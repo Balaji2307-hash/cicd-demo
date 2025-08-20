@@ -27,8 +27,8 @@ pipeline {
                 ]) {
                     bat """
                         mvn deploy -DmuleDeploy ^
-                        -Dmule.username=%MULE_USERNAME% ^
-                        -Dmule.password=%MULE_PASSWORD% ^
+                        -Dmule.username=Bala_23_07 ^
+                        -Dmule.password= Pulsar@2003^
                         -DskipTests -U
                     """
                 }
