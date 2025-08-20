@@ -1,23 +1,54 @@
 pipeline {
     agent any
+    tools {
+        maven 'M3'  // Make sure Maven 3.6.3+ is configured in Jenkins
+    }
     stages {
-        stage('Build Application') {
+        stage('Check Versions') {
             steps {
-                bat 'mvn clean install'
+                bat 'mvn -version'
+                bat 'java -version'
             }
         }
-        stage('Deploy CloudHub') {
+        stage('Build Application') {
             steps {
-                echo 'Deploying mule project due to the latest code commit…'
-                echo 'Deploying to the configured environment….'
-                withCredentials([usernamePassword(
-                    credentialsId: 'anypointplatformcredentials',
-                    usernameVariable: 'Bala_23_07',
-                    passwordVariable: 'Pulsar@2003'
-                )]) {
-                    bat "mvn clean deploy -DmuleDeploy -Dusername=%ANYPOINT_USERNAME% -Dpassword=%ANYPOINT_PASSWORD% -DworkerType=Micro -Dworkers=1"
+                bat 'mvn clean compile -DskipTests'
+            }
+        }
+        stage('Package Application') {
+            steps {
+                bat 'mvn package -DskipTests'
+            }
+        }
+        stage('Deploy to CloudHub') {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'anypointplatformcredentials', 
+                        usernameVariable: 'MULE_USERNAME', 
+                        passwordVariable: 'MULE_PASSWORD'
+                    )
+                ]) {
+                    bat """
+                        mvn deploy -DmuleDeploy \
+                        -Dmule.username=Bala_23_07 \
+                        -Dmule.password=Pulsar@2003 \
+                        -DskipTests
+                    """
                 }
             }
+        }
+    }
+    post {
+        always {
+            echo 'Pipeline execution completed'
+        }
+        success {
+            echo 'Deployment succeeded!'
+        }
+        failure {
+            echo 'Deployment failed. Check logs for details.'
+            bat 'mvn -version'
         }
     }
 }

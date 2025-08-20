@@ -13,8 +13,17 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<app.runtime>4.9.7</app.runtime>
-		<mule.maven.plugin.version>4.3.0</mule.maven.plugin.version>
+		<!-- Use consistent Mule runtime version -->
+		<mule.version>4.4.0</mule.version>
+		
+		<!-- Use consistent Maven plugin version -->
+		<mule.maven.plugin.version>3.9.5</mule.maven.plugin.version>
+		
+		<!-- CloudHub deployment properties -->
+		<cloudhub.deployment.type>cloudhub</cloudhub.deployment.type>
+		<cloudhub.environment>dev</cloudhub.environment>
+		<cloudhub.worker.type>Micro</cloudhub.worker.type>
+		<cloudhub.workers>1</cloudhub.workers>
 	</properties>
 
 	<build>
@@ -24,19 +33,27 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.2.0</version>
 			</plugin>
-        <plugin>
-            <groupId>org.mule.tools.maven</groupId>
-            <artifactId>mule-maven-plugin</artifactId>
-            <version>3.8.0</version>
-            <extensions>true</extensions>
-            <configuration>
-                <deploymentType>cloudhub</deploymentType>
-                <muleVersion>4.4.0</muleVersion>
-                <username>${mule.username}</username>
-                <password>${mule.password}</password>
-                <environment>dev</environment>
-            </configuration>
-        </plugin>
+			<plugin>
+				<groupId>org.mule.tools.maven</groupId>
+				<artifactId>mule-maven-plugin</artifactId>
+				<version>${mule.maven.plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<cloudHubDeployment>
+						<uri>https://anypoint.mulesoft.com</uri>
+						<applicationName>${project.artifactId}</applicationName>
+						<username>${mule.username}</username>
+						<password>${mule.password}</password>
+						<environment>${cloudhub.environment}</environment>
+						<workerType>${cloudhub.worker.type}</workerType>
+						<workers>${cloudhub.workers}</workers>
+						<properties>
+							<property key="anypoint.platform.client_id" value="${mule.client.id}"/>
+							<property key="anypoint.platform.client_secret" value="${mule.client.secret}"/>
+						</properties>
+					</cloudHubDeployment>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -52,6 +69,14 @@
 			<artifactId>mule-sockets-connector</artifactId>
 			<version>1.2.6</version>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		
+		<!-- Mule Runtime -->
+		<dependency>
+			<groupId>org.mule.runtime</groupId>
+			<artifactId>mule-core</artifactId>
+			<version>${mule.version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
