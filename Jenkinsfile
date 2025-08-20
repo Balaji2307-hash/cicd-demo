@@ -20,8 +20,11 @@ pipeline {
                     mvn clean deploy -DmuleDeploy ^
                     -Dusername=Bala_23_07 ^
                     -Dpassword=Pulsar@2003 ^
+                    -DdeploymentTarget=cloudhub-2.0 ^
+                    -Dapplication.name=cicd-demo ^
                     -DworkerType=Micro ^
-                    -Dworkers=1
+                    -Dworkers=1 ^
+                    -Druntime=4.7.2
                 """
             }
         }
