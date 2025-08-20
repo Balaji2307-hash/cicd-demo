@@ -14,7 +14,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		
 		<!-- Mule Runtime Version -->
-		<mule.version>4.4.0</mule.version>
+		<mule.version>4.9.8</mule.version>
 		
 		<!-- Latest stable Mule Maven Plugin version -->
 		<mule.maven.plugin.version>3.9.4</mule.maven.plugin.version>
@@ -39,13 +39,14 @@
 				<extensions>true</extensions>
 				<configuration>
 					<deploymentType>cloudhub</deploymentType>
-					<muleVersion>${mule.version}</muleVersion>
-					<username>${mule.username}</username>
-					<password>${mule.password}</password>
-					<environment>${cloudhub.environment}</environment>
-					<workerType>${cloudhub.worker.type}</workerType>
-					<workers>${cloudhub.workers}</workers>
-					<businessGroup>YOUR_BUSINESS_GROUP_ID</businessGroup> <!-- Add your business group ID -->
+					<muleVersion>4.9.8</muleVersion>
+					<username>Bala_23_07</username>
+					<password>Pulsar@2003</password>
+					<environment>SandBox</environment>
+					<workerType>Micro</workerType>
+					<workers>1</workers>
+					<businessGroup>67aa45f4-aa6e-450c-8d48-515ac9696903
+					</businessGroup> 
 				</configuration>
 			</plugin>
 		</plugins>
